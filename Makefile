@@ -25,7 +25,7 @@ help:
 	{ lastLine = $$0 }' $(MAKEFILE_LIST)
 
 .PHONY: auth/run
-## Build and run the Open ID Connect server
+## Build and run the Open ID Connect Provider
 auth/run:
 	docker-compose -f $(ROOT_DIR)/fusion-auth/docker-compose.yml up
 
@@ -35,12 +35,13 @@ auth/open:
 	open http://localhost:9011
 
 .PHONY: app/build
+## Build the fake application
 app/build:
 	docker build -t $(APP_IMAGE_NAME):latest $(ROOT_DIR)/fake-application
 
 .PHONY: app/run
-## Build and run the fake application
-app/run: app/build
+## Run the fake application
+app/run:
 	docker run --rm --name $(APP_CONTAINER_NAME) -v $(ROOT_DIR)/fake-application/src/app:/usr/src/app -p 8080:5000 $(APP_IMAGE_NAME):latest
 
 .PHONY: app/exec
